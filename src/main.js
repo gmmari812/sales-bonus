@@ -31,7 +31,7 @@ function calculateBonusByProfit(index, total, seller) {
         return 0;
     }
     else {
-        return profit * 0.5
+        return profit * 0.05
     }
 }
 
@@ -68,7 +68,7 @@ function analyzeSalesData(data, options) {
 
     // Индексация продавцов и товаров
         const sellerIndex = Object.fromEntries(sellerStats.map(s => [s.id, s]));
-        const productIndex = Object.fromEntries(data.product.map(p => [p.sku, p]));
+        const productIndex = Object.fromEntries(data.products.map(p => [p.sku, p]));
     
     // Расчет выручки и прибыли для каждого продавца
         data.purchase_records.forEach(record => {
