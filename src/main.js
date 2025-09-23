@@ -44,9 +44,9 @@ function calculateBonusByProfit(index, total, seller) {
 function analyzeSalesData(data, options) {
     // Проверка входных данных
     if (!data
-        || !Array.isArray(data.sellers) || data.sellers.lenght === 0
-        || !Array.isArray(data.products) || data.products.lenght === 0
-        || !Array.isArray(data.purchase_records) || data.purchase_records.lenght === 0) {
+        || !Array.isArray(data.sellers) || data.sellers.length === 0
+        || !Array.isArray(data.products) || data.products.length === 0
+        || !Array.isArray(data.purchase_records) || data.purchase_s.length === 0) {
             throw new Error("Некорректные входные данные");
         }
 
@@ -76,7 +76,7 @@ function analyzeSalesData(data, options) {
             if(!seller) return;
 
             seller.sales_count += 1;
-            seller.revenue += record.total_amount - record.total_discount;
+           // seller.revenue += record.total_amount - record.total_discount;
 
             record.items.forEach(item => {
                 const product = productIndex[item.sku];
@@ -85,6 +85,9 @@ function analyzeSalesData(data, options) {
                 const cost = product.purchase_price * item.quantity;
                 const revenue = calculateRevenue(item, product);
                 const profit = revenue - cost;
+                //seller.profit += profit;
+
+                seller.revenue += revenue;
                 seller.profit += profit;
 
                 if(!seller.products_sold[item.sku]) {
@@ -99,7 +102,7 @@ function analyzeSalesData(data, options) {
 
     // Назначение премий на основе ранжирования
         sellerStats.forEach((seller, index) => {
-            seller.bonus = calculateBonus(index, sellerStats.lenght, seller);
+            seller.bonus = calculateBonus(index, sellerStats.length, seller);
             seller.top_products = Object.entries(seller.products_sold)
             .map(([sku, quantity]) => ({sku, quantity}))
             .sort((a, b) => b.quantity - a.quantity)
@@ -117,3 +120,9 @@ function analyzeSalesData(data, options) {
         bonus: +seller.bonus.toFixed(2)
       }))
 }
+
+    module.exports = {
+        calculateSimpleRevenue,
+        calculateBonusByProfit,
+        analyzeSalesData
+    };
