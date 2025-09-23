@@ -76,7 +76,7 @@ function analyzeSalesData(data, options) {
             if(!seller) return;
 
             seller.sales_count += 1;
-           // seller.revenue += record.total_amount - record.total_discount;
+            seller.revenue += record.total_amount - record.total_discount;
 
             record.items.forEach(item => {
                 const product = productIndex[item.sku];
@@ -85,7 +85,7 @@ function analyzeSalesData(data, options) {
                 const cost = product.purchase_price * item.quantity;
                 const revenue = calculateRevenue(item, product);
                 const profit = revenue - cost;
-                //seller.profit += profit;
+                seller.profit += profit;
 
                 seller.revenue += revenue;
                 seller.profit += profit;
@@ -121,8 +121,3 @@ function analyzeSalesData(data, options) {
       }))
 }
 
-    module.exports = {
-        calculateSimpleRevenue,
-        calculateBonusByProfit,
-        analyzeSalesData
-    };
