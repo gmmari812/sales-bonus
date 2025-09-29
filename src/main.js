@@ -17,7 +17,7 @@ function calculateBonusByProfit(index, total, seller) {
 
 function calculateSimpleRevenue(purchase, _product) {
    const discountFactor = 1 - purchase.discount / 100;
-   return purchase.sale_price * purchase.quantity * discountFactor;
+   return purchase.sale_price * purchase.quantity * discountFactor.toFixed(2);
 }
 
 function analyzeSalesData(data, options) {
