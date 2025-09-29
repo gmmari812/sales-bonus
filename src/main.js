@@ -121,7 +121,7 @@ function analyzeSalesData(data, options) {
       }));
 }
 
-export {
+module.exports = {
     calculateSimpleRevenue,
     calculateBonusByProfit,
     analyzeSalesData
