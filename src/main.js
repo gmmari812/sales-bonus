@@ -17,7 +17,7 @@ function calculateBonusByProfit(index, total, seller) {
 
 function calculateSimpleRevenue(purchase, _product) {
    const discountFactor = 1 - purchase.discount / 100;
-   return purchase.sale_price * purchase.quantity * discountFactor.toFixed(2);
+   return +(purchase.sale_price * purchase.quantity * discountFactor).toFixed(2);
 }
 
 function analyzeSalesData(data, options) {
@@ -77,6 +77,7 @@ function analyzeSalesData(data, options) {
 
 
         seller.sales_count += 1;
+        seller.revenue = +(seller.revenue + record.total_amount).toFixed(2);
 
         record.items.forEach(item => {
             const product = productIndex[item.sku];
@@ -86,8 +87,8 @@ function analyzeSalesData(data, options) {
             const revenue = calculateRevenue(item, product);
             const profit = revenue - cost;
 
-            seller.profit += profit;
-            seller.revenue += revenue;
+            seller.profit = +(seller.profit + profit).toFixed(2);
+            seller.revenue = +(seller.revenue + revenue).toFixed(2);
 
             if (!seller.products_sold[item.sku]) {
                 seller.products_sold[item.sku] = 0;
