@@ -46,7 +46,7 @@ function analyzeSalesData(data, options) {
     if (!data
         || !Array.isArray(data.sellers) || data.sellers.length === 0
         || !Array.isArray(data.products) || data.products.length === 0
-        || !Array.isArray(data.purchase_records) || data.purchase_s.length === 0) {
+        || !Array.isArray(data.purchase_records) || data.purchase_records.length === 0) {
             throw new Error("Некорректные входные данные");
         }
 
@@ -76,7 +76,7 @@ function analyzeSalesData(data, options) {
             if(!seller) return;
 
             seller.sales_count += 1;
-            seller.revenue += record.total_amount - record.total_discount;
+            //seller.revenue += record.total_amount - record.total_discount;
 
             record.items.forEach(item => {
                 const product = productIndex[item.sku];
@@ -85,7 +85,7 @@ function analyzeSalesData(data, options) {
                 const cost = product.purchase_price * item.quantity;
                 const revenue = calculateRevenue(item, product);
                 const profit = revenue - cost;
-                seller.profit += profit;
+                //seller.profit += profit;
 
                 seller.revenue += revenue;
                 seller.profit += profit;
@@ -94,8 +94,8 @@ function analyzeSalesData(data, options) {
                     seller.products_sold[item.sku] = 0;
                 }
                 seller.products_sold[item.sku] += item.quantity;
-            })
-        })
+            });
+        });
 
     // Сортировка продавцов по прибыли
         sellerStats.sort((a, b) => b.profit - a.profit);
@@ -107,7 +107,7 @@ function analyzeSalesData(data, options) {
             .map(([sku, quantity]) => ({sku, quantity}))
             .sort((a, b) => b.quantity - a.quantity)
             .slice(0, 10);
-        })
+        });
 
     // Подготовка итоговой коллекции с нужными полями
       return sellerStats.map(seller => ({
@@ -118,6 +118,11 @@ function analyzeSalesData(data, options) {
         sales_count: seller.sales_count,
         top_products: seller.top_products,
         bonus: +seller.bonus.toFixed(2)
-      }))
+      }));
 }
 
+export {
+    calculateSimpleRevenue,
+    calculateBonusByProfit,
+    analyzeSalesData
+};
