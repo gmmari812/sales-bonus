@@ -17,7 +17,7 @@ function calculateBonusByProfit(index, total, seller) {
 
 function calculateSimpleRevenue(purchase, _product) {
    const discountFactor = 1 - purchase.discount / 100;
-   return purchase.sales_price * purchase.quantity * discountFactor;
+   return purchase.sale_price * purchase.quantity * discountFactor;
 }
 
 function analyzeSalesData(data, options) {
@@ -30,7 +30,7 @@ function analyzeSalesData(data, options) {
         typeof calculateRevenue !== "function" ||
         typeof calculateBonus !== "function"
     ) {
-        throw new Error("Не отпределены функции для расчетов");
+        throw new Error("Не определены функции для расчетов");
     }
 
    if (!data) {
@@ -59,7 +59,7 @@ function analyzeSalesData(data, options) {
             revenue: 0,
             profit: 0,
             sales_count: 0,
-            products_sold: 0,
+            products_sold: {},
             bonus: 0,
             top_products: [],
         },
@@ -77,7 +77,6 @@ function analyzeSalesData(data, options) {
 
 
         seller.sales_count += 1;
-        seller.revenue += record.total_amount;
 
         record.items.forEach(item => {
             const product = productIndex[item.sku];
@@ -88,6 +87,7 @@ function analyzeSalesData(data, options) {
             const profit = revenue - cost;
 
             seller.profit += profit;
+            seller.revenue += revenue;
 
             if (!seller.products_sold[item.sku]) {
                 seller.products_sold[item.sku] = 0;
