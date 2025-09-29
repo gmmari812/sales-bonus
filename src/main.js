@@ -77,7 +77,6 @@ function analyzeSalesData(data, options) {
 
 
         seller.sales_count += 1;
-        seller.revenue = +(seller.revenue + record.total_amount).toFixed(2);
 
         record.items.forEach(item => {
             const product = productIndex[item.sku];
